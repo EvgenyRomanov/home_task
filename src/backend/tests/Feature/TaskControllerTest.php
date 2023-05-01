@@ -85,7 +85,6 @@ class TaskControllerTest extends TestCase
 
     public function testTaskIsShownCorrectly()
     {
-
         $taskData = [
             'text' => $this->faker->text,
             'engineer_id' => null,
@@ -129,4 +128,79 @@ class TaskControllerTest extends TestCase
         $this->assertDatabaseMissing('tasks', $taskData);
     }
 
+    public function testUpdateTaskReturnsCorrectData()
+    {
+        $taskData = [
+            'text' => $this->faker->text,
+            'engineer_id' => null,
+            'status_id' => 1
+        ];
+
+        $task = Task::create(
+            $taskData
+        );
+
+        $payload = [
+            'text' => $taskData['text'],
+            'status_id' => 2,
+            'engineer_id' => 1
+        ];
+
+        $this->json('put', "api/tasks/$task->id", $payload)
+            ->assertStatus(Response::HTTP_OK)
+            ->assertExactJson(
+                [
+                    'data' => [
+                        'id' => $task->id,
+                        'engineer_id' => $payload['engineer_id'],
+                        'status_id' => $payload['status_id'],
+                        'created_at' => $task->created_at,
+                        'updated_at' => $task->updated_at,
+                        'text' => $task->text
+                    ]
+                ]
+            );
+    }
+
+    public function testUpdateTaskReturnsFail()
+    {
+        $taskData = [
+            'text' => $this->faker->text,
+            'engineer_id' => null,
+            'status_id' => 1
+        ];
+
+        $task = Task::create(
+            $taskData
+        );
+
+        $payload = [
+            'text' => $taskData['text'],
+            'status_id' => 44,   // Несуществующий статус
+            'engineer_id' => 1
+        ];
+
+        $this->json('patch', "api/tasks/$task->id", $payload)
+            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->assertJsonStructure(
+                [
+                    'message',
+                    'errors' => [
+                        'status_id',
+                    ]
+                ]
+            );
+    }
+
+    public function testUpdateTaskNotFound()
+    {
+        $payload = [
+            'text' => 'Test',
+            'status_id' => 1,
+            'engineer_id' => 1
+        ];
+
+        $this->json('put', 'api/tasks/0', $payload)
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+    }
 }

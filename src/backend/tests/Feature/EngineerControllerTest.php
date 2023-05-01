@@ -92,7 +92,7 @@ class EngineerControllerTest extends TestCase
             );
     }
 
-    public function testTaskIsShownCorrectly()
+    public function testEngineerIsShownCorrectly()
     {
 
         $engineerData = [
@@ -123,7 +123,7 @@ class EngineerControllerTest extends TestCase
             );
     }
 
-    public function testTaskIsDestroyed()
+    public function testEngineerIsDestroyed()
     {
         $engineerData = [
             'name' => $this->faker->firstName,
@@ -141,4 +141,85 @@ class EngineerControllerTest extends TestCase
         $this->assertDatabaseMissing('engineers', $engineerData);
     }
 
+    public function testUpdateEngineerReturnsCorrectData()
+    {
+        $engineerData = [
+            'name' => $this->faker->firstName,
+            'surname'  => $this->faker->lastName,
+            'phone' => null,
+            'email' => $this->faker->email
+        ];
+
+        $engineer = Engineer::create(
+            $engineerData
+        );
+
+        $payload = [
+            'name' => $engineerData['name'],
+            'surname' => $engineerData['surname'],
+            'email' => 'test@mail.ru',
+            'phone' => $engineerData['phone']
+        ];
+
+        $this->json('put', "api/engineers/$engineer->id", $payload)
+            ->assertStatus(Response::HTTP_OK)
+            ->assertExactJson(
+                [
+                    'data' => [
+                        'id' => $engineer->id,
+                        'name' => $engineer->name,
+                        'surname'  => $engineer->surname,
+                        'phone' => $engineer->phone,
+                        'email' => $payload['email'],
+                        'created_at' => $engineer->created_at,
+                        'updated_at' => $engineer->updated_at,
+                    ]
+                ]
+            );
+    }
+
+    public function testUpdateEngineerReturnsFail()
+    {
+        $engineerData = [
+            'name' => $this->faker->firstName,
+            'surname'  => $this->faker->lastName,
+            'phone' => null,
+            'email' => $this->faker->email
+        ];
+
+        $engineer = Engineer::create(
+            $engineerData
+        );
+
+        $payload = [
+            'name' => $engineerData['name'],
+            'surname' => $engineerData['surname'],
+            'email' => 'test@mail.ru',
+            'phone' => 1234   // Некорректный номер
+        ];
+
+        $this->json('put', "api/engineers/$engineer->id", $payload)
+            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->assertJsonStructure(
+                [
+                    'message',
+                    'errors' => [
+                        'phone',
+                    ]
+                ]
+            );
+    }
+
+    public function testUpdateEngineerNotFound()
+    {
+        $payload = [
+            'name' => 'Test',
+            'surname' => 'Test',
+            'email' => 'test@mail.ru',
+            'phone' => null
+        ];
+
+        $this->json('put', 'api/engineers/0', $payload)
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+    }
 }
