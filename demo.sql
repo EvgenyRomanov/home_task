@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: mysql
--- Время создания: Май 01 2023 г., 11:28
+-- Время создания: Май 01 2023 г., 15:52
 -- Версия сервера: 8.0.32
 -- Версия PHP: 8.1.17
 
@@ -36,15 +36,6 @@ CREATE TABLE `engineers` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Дамп данных таблицы `engineers`
---
-
-INSERT INTO `engineers` (`id`, `name`, `surname`, `phone`, `email`, `created_at`, `updated_at`) VALUES
-(1, 'Test', 'Test', NULL, NULL, NULL, NULL),
-(2, 'TEST1', 'TEST2', '+7(123)456-78-99', 'qwer@mail.ru', '2023-05-01 11:15:23', '2023-05-01 11:15:23'),
-(3, 'TEST1', 'TEST2', '+7(123)456-78-99', 'qwer@mail.ru', '2023-05-01 11:15:26', '2023-05-01 11:15:26');
 
 -- --------------------------------------------------------
 
@@ -79,13 +70,13 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '2014_10_12_000000_create_users_table', 1),
-(2, '2014_10_12_100000_create_password_resets_table', 1),
-(3, '2019_08_19_000000_create_failed_jobs_table', 1),
-(4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-(5, '2023_04_29_101706_create_statuses_table', 2),
-(6, '2023_04_29_102344_create_engineers_table', 2),
-(7, '2023_04_29_102345_create_tasks_table', 2);
+(22, '2014_10_12_000000_create_users_table', 1),
+(23, '2014_10_12_100000_create_password_resets_table', 1),
+(24, '2019_08_19_000000_create_failed_jobs_table', 1),
+(25, '2019_12_14_000001_create_personal_access_tokens_table', 1),
+(26, '2023_04_29_101706_create_statuses_table', 1),
+(27, '2023_04_29_102344_create_engineers_table', 1),
+(28, '2023_04_29_102345_create_tasks_table', 1);
 
 -- --------------------------------------------------------
 
@@ -153,19 +144,6 @@ CREATE TABLE `tasks` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Дамп данных таблицы `tasks`
---
-
-INSERT INTO `tasks` (`id`, `text`, `status_id`, `engineer_id`, `created_at`, `updated_at`) VALUES
-(3, 'TEST', 1, NULL, '2023-05-01 09:13:13', '2023-05-01 09:13:13'),
-(4, 'TEST', 1, NULL, '2023-05-01 09:14:11', '2023-05-01 09:14:11'),
-(5, 'TESЕ', 1, NULL, '2023-05-01 09:29:42', '2023-05-01 09:29:42'),
-(6, 'TES', 1, NULL, '2023-05-01 09:29:47', '2023-05-01 09:29:47'),
-(7, 'TE', 1, NULL, '2023-05-01 09:29:50', '2023-05-01 09:29:50'),
-(8, 'TEe', 1, NULL, '2023-05-01 09:32:28', '2023-05-01 09:32:28'),
-(9, 'TE', 1, 1, '2023-05-01 09:33:51', '2023-05-01 09:33:51');
 
 -- --------------------------------------------------------
 
@@ -250,7 +228,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `engineers`
 --
 ALTER TABLE `engineers`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `failed_jobs`
@@ -262,7 +240,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT для таблицы `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT для таблицы `personal_access_tokens`
@@ -280,7 +258,7 @@ ALTER TABLE `statuses`
 -- AUTO_INCREMENT для таблицы `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
