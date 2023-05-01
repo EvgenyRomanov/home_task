@@ -19,9 +19,17 @@ abstract class AbstractFilter implements FilterInterface
         $this->queryParams = $queryParams;
     }
 
+    /**
+     * @return array
+     */
     abstract protected function getCallbacks(): array;
 
-    public function apply(Builder $builder)
+    /**
+     * @param Builder $builder
+     *
+     * @return void
+     */
+    public function apply(Builder $builder): void
     {
         $this->before($builder);
 
@@ -55,7 +63,7 @@ abstract class AbstractFilter implements FilterInterface
      *
      * @return AbstractFilter
      */
-    protected function removeQueryParam(string ...$keys)
+    protected function removeQueryParam(string ...$keys): AbstractFilter
     {
         foreach ($keys as $key) {
             unset($this->queryParams[$key]);
